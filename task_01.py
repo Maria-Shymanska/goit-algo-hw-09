@@ -20,9 +20,6 @@ def find_coins_greedy(amount):
 
     return result
 
-# # Приклад використання
-print(find_coins_greedy(113))  # {50: 2, 10: 1, 2: 1, 1: 1}
-
 
 '''Функція динамічного програмування find_min_coins. 
 Ця функція також повинна приймати суму для видачі решти, 
@@ -57,5 +54,6 @@ def find_min_coins(amount):
     return result
 
 # Приклад використання
-print(find_min_coins(113))  # {50: 2, 10: 1, 2: 1, 1: 1}
-
+amount = 113
+print("Жадібний алгоритм:", find_coins_greedy(amount))
+print("Динамічне програмування:", find_min_coins(amount))
