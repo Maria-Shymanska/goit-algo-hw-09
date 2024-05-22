@@ -20,7 +20,7 @@ def find_coins_greedy(amount):
 
     return result
 
-# Приклад використання
+# # Приклад використання
 print(find_coins_greedy(113))  # {50: 2, 10: 1, 2: 1, 1: 1}
 
 
@@ -30,43 +30,32 @@ print(find_coins_greedy(113))  # {50: 2, 10: 1, 2: 1, 1: 1}
 необхідних для формування цієї суми. Функція повинна повертати словник із номіналами монет та їх кількістю для досягнення заданої суми найефективнішим способом.
 Наприклад, для суми 113 це буде словник {1: 1, 2: 1, 10: 1, 50: 2}'''
 
-def find_min_coins(amount, coins, memo):
-    if amount in memo:
-        return memo[amount]
-    if amount == 0:
-        return {}
-    if amount < 0:
-        return None
-
-    min_coins = None
-    for coin in coins:
-        remaining_amount = amount - coin
-        result = find_min_coins(remaining_amount, coins, memo)
-        
-        if result is not None:
-            current_result = result.copy()
-            if coin in current_result:
-                current_result[coin] += 1
-            else:
-                current_result[coin] = 1
-            
-            if min_coins is None or sum(current_result.values()) < sum(min_coins.values()):
-                min_coins = current_result
-
-    memo[amount] = min_coins
-    return min_coins
-
-def main():
+def find_min_coins(amount):
     coins = [50, 25, 10, 5, 2, 1]
-    amount = 113
-    memo = {}
+    dp = [float('inf')] * (amount + 1)
+    dp[0] = 0
+    coin_used = [0] * (amount + 1)
     
-    result = find_min_coins(amount, coins, memo)
-    
-    if result:
-        print(result)
-    else:
-        print("Не можна видати задану суму з наявними номіналами монет.")
+    for coin in coins:
+        for x in range(coin, amount + 1):
+            if dp[x - coin] + 1 < dp[x]:
+                dp[x] = dp[x - coin] + 1
+                coin_used[x] = coin
 
-if __name__ == "__main__":
-    main()
+    if dp[amount] == float('inf'):
+        return {}
+    
+    result = {}
+    while amount > 0:
+        coin = coin_used[amount]
+        if coin in result:
+            result[coin] += 1
+        else:
+            result[coin] = 1
+        amount -= coin
+
+    return result
+
+# Приклад використання
+print(find_min_coins(113))  # {50: 2, 10: 1, 2: 1, 1: 1}
+
